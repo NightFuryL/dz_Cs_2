@@ -19,10 +19,6 @@ class Program
             }
             if (c == '+' || c == '-' || i == expr.Length - 1)
             {
-                if (i == expr.Length - 1 && c >= '0' && c <= '9')
-                {
-                    //num = num * 10 + (c - '0');
-                }
                 if (op == '+') sum += num;
                 else if (op == '-') sum -= num;
                 num = 0;
