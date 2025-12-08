@@ -1,77 +1,49 @@
 ﻿using System;
-using dz_Cs_2.NewFolder.exercise1;
-using dz_Cs_2.NewFolder.exercise2;
-using dz_Cs_2.HW2;
-
-
+using System.Collections.Generic;
+using System.Linq;
+//Було трохи складно, адже ми не проходили LINQ, але я зробив з ним, бо це дуже зручно,ну прям дуууже зручно
 namespace dz_Cs_2;
 class Program
 {
+    public static T FindMedian<T>(IEnumerable<T> collection) where T : IComparable<T>
+    {
+        var sortedList = collection.OrderBy(item => item).ToList();
+        int count = sortedList.Count;
+        if (count % 2 == 1)
+        {
+            return sortedList[count / 2];
+        }
+        else
+        {
+            if(typeof(T) == typeof(int))
+            {
+                int avgSum = Convert.ToInt32(sortedList[(count / 2) - 1]) + Convert.ToInt32(sortedList[count / 2]);
+                return (T)Convert.ChangeType(avgSum / 2, typeof(T));
+            }
+            else if(typeof(T) == typeof(string))
+            {
+                string? first = sortedList[(count / 2) - 1].ToString();
+                string? second = sortedList[count / 2].ToString();
+                //return (T)Convert.ChangeType(first + " " + second, typeof(T));//я повертаю два але можно тільки один із них
+                return sortedList[count / 2];//якщо треба тільки один
+            }
+            else
+            {
+                throw new InvalidOperationException("Unsupported type for median calculation:)");
+            }
+
+        }
+    }
     static void Main()
     {
-        #region HW 22.11.2025 - 29.11.2025 (folder HW1)
-        Skripka s = new Skripka();
-        Trombon t = new Trombon();
-        Ukulele u = new Ukulele();
-        Violonchel v = new Violonchel();
-        s.Show(); 
-        s.Sound(); 
-        s.Desc(); 
-        s.History();
-        t.Show(); 
-        t.Sound(); 
-        t.Desc(); 
-        t.History();
-        u.Show(); 
-        u.Sound(); 
-        u.Desc(); 
-        u.History();
-        v.Show(); 
-        v.Sound(); 
-        v.Desc(); 
-        v.History();
-        Course c1 = new Course("Програмування", 40);
-        OnlineCourse c2 = new OnlineCourse("C#", 25, "IT Step");
-        Console.WriteLine(c1);
-        Console.WriteLine(c2);
-        #endregion
-        #region HW 23.11.2025 - 30.11.2025 (folder HW2)
-        Money a = new Money(10, 50);
-        Money b = new Money(3, 80);
-        while (true)
-        {
-            Console.WriteLine($"A = {a}");
-            Console.WriteLine($"B = {b}");
-            Console.WriteLine("1 - Add");
-            Console.WriteLine("2 - Sub");
-            Console.WriteLine("3 - Mul");
-            Console.WriteLine("4 - Div");
-            Console.WriteLine("5 - Inc");
-            Console.WriteLine("6 - Dec");
-            Console.WriteLine("7 - Compare");
-            Console.WriteLine("0 - Exit");
-            string? c = Console.ReadLine();
-            try
-            {
-                if (c == "1") Console.WriteLine($"a + b = {a + b}");
-                else if (c == "2") Console.WriteLine($"a - b = { a - b}");
-                else if (c == "3") Console.WriteLine($"a * 2 = {a * 2}");
-                else if (c == "4") Console.WriteLine($"a / 2 = {a / 2}");
-                else if (c == "5") { a++; Console.WriteLine($"A = {a}"); }
-                else if (c == "6") { a--; Console.WriteLine($"A = {a}"); }
-                else if (c == "7")
-                {
-                    Console.WriteLine("a < b " + (a < b));
-                    Console.WriteLine("a > b " + (a > b));
-                    Console.WriteLine("a == b " + (a == b));
-                }
-                else if (c == "0") break;
-            }
-            catch (BankruptException ex)
-            {
-                Console.WriteLine($"Error: {ex.Message}");
-            }
-        }
-        #endregion
+        Console.WriteLine(FindMedian(new List<int> { 5, 2, 9, 1, 6 }));
+        Console.WriteLine(FindMedian(new List<int> { 4, 1, 7, 9, 3, 8 }));
+
+        Console.WriteLine(FindMedian(new List<string>
+        { "apple", "banana", "cherry", "date", "fig" }));
+
+        Console.WriteLine(FindMedian(new List<string>
+        { "apple", "banana", "cherry", "date" }));
     }
+
 }
